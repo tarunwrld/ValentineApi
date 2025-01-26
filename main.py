@@ -1,8 +1,18 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 app = FastAPI()
+
+# Allow CORS for all domains (you can restrict it to specific domains if needed)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all domains to make requests (change to specific domains for production)
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
 
 data_store = {}
 
