@@ -14,7 +14,7 @@ async def root():
 async def add_name(ticker: str):
     try:
         data_store[ticker] = ticker
-        return {"message": "Ticker added successfully"}
+        return JSONResponse(content={"added_ticker": ticker, "stored_tickers": list(data_store.values())})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
