@@ -1,19 +1,24 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 import uvicorn
 
 app = FastAPI()
 
 data_store = {}
 
+class NameRequest(BaseModel):
+    name: str
+
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
 
-@app.get("/fastapi/add-names/{ticker}")
-async def add_name(ticker: str):
+@app.post("/fastapi/add-names/{ticker}")
+async def add_name(ticker: str, body: NameRequest):
     try:
-        data_store[ticker] = ticker
+        # Store the name in the data store
+        data_store[ticker] = body.name
         return JSONResponse(content={"added_ticker": ticker, "stored_tickers": list(data_store.values())})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
